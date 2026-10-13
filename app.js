@@ -27,6 +27,9 @@ app.use(express.urlencoded({ extended: false }));
 // Route principale
 app.use(require('./routes/index'));
 
+// Initialisation de la connexion MQTT
+require('./services/mqttService');
+
 // Démarrage du serveur Web
 let server = app.listen(PORT, function() {
     console.log('Serveur démarré sur http://localhost:' + PORT);

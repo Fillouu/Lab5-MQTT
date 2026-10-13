@@ -14,6 +14,9 @@ var router = express.Router();
 // Importation de la liste Singleton
 const itemList = require('../models/itemList');
 
+// Service MQTT
+const mqttService = require('../services/mqttService');
+
 // Affichage de la page principale
 router.get('/', function(req, res, next) {
     res.render('pages/index', {
@@ -43,8 +46,14 @@ router.post('/ajouter', function(req, res, next) {
         });
     }
 
+    
     // Ajout de l'item dans la liste
-    itemList.ajouterItem(nom, prix);
+    const nouvelItem = itemList.ajouterItem(nom, prix);
+
+    // Publication de l'ajout sur MQTT
+    const message = nouvelItem.nom + ';' + nouvelItem.prix;
+
+    mqttService.publier('ITEM/WEB/NEW', message);
 
     // Retour à la page principale
     res.redirect('/');
@@ -86,6 +95,13 @@ router.post('/supprimer/id', function(req, res, next) {
         });
     }
 
+    
+    // Publication MQTT après une suppression réussie
+    mqttService.publier(
+        'ITEM/WEB/DELETE/ID',
+        String(id)
+    );
+
     // Retour à la page principale
     res.redirect('/');
 });
@@ -122,8 +138,16 @@ router.post('/supprimer/nom', function(req, res, next) {
         });
     }
 
+    
+    // Publication MQTT après une suppression réussie
+    mqttService.publier(
+        'ITEM/WEB/DELETE/NAME',
+        nom
+    );
+
     // Retour à la page principale
     res.redirect('/');
+
 });
 
 
