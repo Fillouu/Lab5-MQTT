@@ -131,30 +131,107 @@
 
         </section>
 
+
+        <!-- Formulaire de modification d'un item -->
+        <section class="formulaire-section">
+
+            <h3>Modifier un item</h3>
+
+            <form action="/modifier" method="POST">
+
+                <!-- Identifiant de l'item -->
+                <div class="form-group">
+                    <label for="idModification">
+                        ID de l'item :
+                    </label>
+
+                    <input
+                        type="number"
+                        id="idModification"
+                        name="id"
+                        placeholder="Ex. : 1"
+                        min="1"
+                        step="1"
+                        required
+                    >
+                </div>
+
+                <!-- Nouveau nom -->
+                <div class="form-group">
+                    <label for="nomModification">
+                        Nouveau nom :
+                    </label>
+
+                    <input
+                        type="text"
+                        id="nomModification"
+                        name="nom"
+                        placeholder="Ex. : Clavier mécanique"
+                        required
+                    >
+                </div>
+
+                <!-- Nouveau prix -->
+                <div class="form-group">
+                    <label for="prixModification">
+                        Nouveau prix ($) :
+                    </label>
+
+                    <input
+                        type="number"
+                        id="prixModification"
+                        name="prix"
+                        placeholder="Ex. : 79.99"
+                        min="0"
+                        step="0.01"
+                        required
+                    >
+                </div>
+
+                <!-- Bouton de modification -->
+                <button type="submit" class="btn-modifier">
+                    Modifier l'item
+                </button>
+
+            </form>
+
+        </section>
+
+
         <!-- Tableau des items -->
         <section class="tableau-section">
 
             <h3>Liste des items</h3>
 
-            <table>
+            <table id="tableau-items">
+                
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Date de création</th>
-                        <th>Nom</th>
-                        <th>Prix</th>
+                        <th data-type="nombre">ID</th>
+                        <th data-type="date">Date de création</th>
+                        <th data-type="texte">Nom</th>
+                        <th data-type="nombre">Prix</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     <% items.forEach(function(item) { %>
                         <tr>
-                            <td><%= item.id %></td>
-                            <td>
+                            <td data-sort="<%= item.id %>">
+                                <%= item.id %>
+                            </td>
+
+                            <td data-sort="<%= new Date(item.dateCreation).getTime() %>">
                                 <%= item.dateCreation.toLocaleString('fr-CA') %>
                             </td>
-                            <td><%= item.nom %></td>
-                            <td><%= Number(item.prix).toFixed(2) %> $</td>
+
+                            <td>
+                                <%= item.nom %>
+                            </td>
+
+                            <td data-sort="<%= Number(item.prix) %>">
+                                <%= Number(item.prix).toFixed(2) %> $
+                            </td>
                         </tr>
                     <% }); %>
                 </tbody>
@@ -168,7 +245,16 @@
 
     </main>
 
+
     <%- include('../partials/footer') %>
+
+    <!-- Bibliothèque cliente Socket.io -->
+    <script src="/socket.io/socket.io.js"></script>
+
+    <!-- Notre script Socket.io -->
+    <script src="/scripts/socket.js"></script>
+
+    <script src="/scripts/triTableau.js"></script>
 
 </body>
 </html>

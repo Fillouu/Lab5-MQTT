@@ -13,6 +13,21 @@ const mqtt = require('mqtt');
 // Importation de la liste Singleton
 const itemList = require('../models/itemList');
 
+// Instance Socket.io fournie par app.js
+let io = null;
+
+// Associer Socket.io au service MQTT
+function setSocketIO(socketIO) {
+    io = socketIO;
+}
+
+// Informer les navigateurs d'une modification
+function notifierModification() {
+    if (io) {
+        io.emit('itemsUpdated');
+    }
+}
+
 // Adresse du broker MQTT
 const BROKER_URL = 'mqtt://localhost:1883';
 
@@ -80,6 +95,8 @@ client.on('message', function(topic, message) {
 
             itemList.ajouterItem(nom, prix);
 
+            notifierModification();
+
             console.log('Item ajouté depuis MQTT.');
             break;
         }
@@ -94,6 +111,10 @@ client.on('message', function(topic, message) {
             }
 
             const resultat = itemList.supprimerParId(id);
+
+            if (resultat) {
+                notifierModification();
+            }
 
             console.log(
                 resultat
@@ -114,6 +135,10 @@ client.on('message', function(topic, message) {
             }
 
             const resultat = itemList.supprimerParNom(nom);
+
+            if (resultat) {
+                notifierModification();
+            }
 
             console.log(
                 resultat
@@ -150,5 +175,6 @@ function publier(topic, message) {
 
 module.exports = {
     client,
-    publier
+    publier,
+    setSocketIO
 };

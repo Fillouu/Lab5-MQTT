@@ -1,40 +1,64 @@
+
 /**
  * @file      app.js
  * @author    Felix Gladu
- * @version   1.0
+ * @version   2.0
  * @date      13 octobre 2026
- * @brief     Configure et démarre le serveur Web Express
- *            du laboratoire 5.
+ * @brief     Initialise le serveur Express, les routes,
+ *            la connexion MQTT et Socket.io.
  */
 
+const express = require('express');
+const http = require('http');
+const { Server } = require('socket.io');
+
+// Initialisation Express
+const app = express();
 const PORT = 3000;
 
-var express = require('express');
+// Création du serveur HTTP
+const server = http.createServer(app);
 
-var app = express();
+// Initialisation Socket.io
+const io = new Server(server);
 
-// Configuration du moteur de vues EJS
+// Configuration EJS
 app.set('view engine', 'ejs');
 app.set('views', './views');
 
-// Configuration des fichiers statiques
+// Middlewares
 app.use(express.static('./public'));
-
-// Configuration pour recevoir les données
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Route principale
+// Routes Express
 app.use(require('./routes/index'));
 
-// Initialisation de la connexion MQTT
-require('./services/mqttService');
+// Initialisation du service MQTT
+const mqttService = require('./services/mqttService');
 
-// Démarrage du serveur Web
-let server = app.listen(PORT, function() {
+// Transmettre Socket.io au service MQTT
+mqttService.setSocketIO(io);
+
+// Connexion des navigateurs avec Socket.io
+io.on('connection', function(socket) {
+
+    console.log('Client Socket.io connecté : ' + socket.id);
+
+    // Déconnexion du navigateur
+    socket.on('disconnect', function() {
+        console.log('Client Socket.io déconnecté : ' + socket.id);
+    });
+});
+
+// Démarrage du serveur
+server.listen(PORT, function() {
     console.log('Serveur démarré sur http://localhost:' + PORT);
 });
 
-// Exportation de l'application
-module.exports = { app: app };
-
+// Exportation pour les autres modules
+module.exports = {
+    app: app,
+    server: server,
+    io: io
+};

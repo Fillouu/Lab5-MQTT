@@ -211,3 +211,15 @@ footer {
     }
 }
 
+
+/* Bouton de modification */
+
+.btn-modifier {
+    background-color: #f39c12;
+    color: white;
+}
+
+.btn-modifier:hover {
+    background-color: #d68910;
+}
+
