@@ -1,51 +1,166 @@
+
 /**
  * @file      style.css
  * @author    Felix Gladu
- * @version   1.0
+ * @version   2.0
  * @date      13 octobre 2026
- * @brief     Définit l'apparence du laboratoire 5.
+ * @brief     Mise en page de l'application de gestion
+ *            des items avec Express, EJS et MQTT.
  */
+
+/* Style général */
+
+* {
+    box-sizing: border-box;
+}
 
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    background-color: #f4f4f4;
+    padding: 0;
+    background-color: #f4f6f9;
     color: #333;
 }
+
+/* En-tête */
 
 header {
     background-color: #2c3e50;
     color: white;
+    padding: 25px;
     text-align: center;
-    padding: 20px;
 }
 
+header h1 {
+    margin: 0 0 10px;
+}
+
+header p {
+    margin: 0;
+}
+
+/* Contenu principal */
+
 main {
-    max-width: 1000px;
+    max-width: 1100px;
     margin: 30px auto;
-    padding: 20px;
+    padding: 30px;
     background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+}
+
+h2 {
+    color: #2c3e50;
+    margin-top: 0;
+}
+
+h3 {
+    color: #34495e;
+    margin-top: 0;
+}
+
+/* Sections des formulaires */
+
+.formulaire-section {
+    background-color: #f8f9fa;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #e1e5e9;
     border-radius: 8px;
 }
 
-footer {
-    text-align: center;
-    padding: 15px;
-    color: #666;
+.formulaire-section form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 15px;
 }
 
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+    min-width: 180px;
+}
+
+.form-group label {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+}
+
+/* Boutons */
+
+button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.btn-ajouter {
+    background-color: #198754;
+    color: white;
+}
+
+.btn-ajouter:hover {
+    background-color: #146c43;
+}
+
+.btn-supprimer {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-supprimer:hover {
+    background-color: #b02a37;
+}
+
+/* Messages d'erreur */
+
+.message-erreur {
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: #f8d7da;
+    color: #842029;
+    border: 1px solid #f5c2c7;
+    border-radius: 5px;
+    font-weight: bold;
+}
 
 /* Tableau des items */
+
+.tableau-section {
+    margin-top: 30px;
+}
 
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-top: 15px;
 }
 
 th, td {
-    padding: 12px;
-    border: 1px solid #ddd;
+    padding: 14px;
+    border-bottom: 1px solid #ddd;
     text-align: left;
 }
 
@@ -55,9 +170,44 @@ th {
 }
 
 tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
+    background-color: #f2f5f8;
 }
 
 tbody tr:hover {
     background-color: #e8f0f8;
 }
+
+/* Pied de page */
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+}
+
+/* Adaptation aux petits écrans */
+
+@media (max-width: 600px) {
+    main {
+        margin: 15px;
+        padding: 15px;
+    }
+
+    .formulaire-section form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .form-group {
+        min-width: 100%;
+    }
+
+    button {
+        width: 100%;
+    }
+
+    .tableau-section {
+        overflow-x: auto;
+    }
+}
+

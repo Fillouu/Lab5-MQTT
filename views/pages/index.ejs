@@ -2,8 +2,10 @@
 <!--
     @file      index.ejs
     @author    Felix Gladu
+    @version   1.1
     @date      13 octobre 2026
-    @brief     Affiche les items dans un tableau HTML.
+    @brief     Affiche la liste des items et permet
+               l'ajout d'un nouvel item.
 -->
 
 <!DOCTYPE html>
@@ -18,35 +20,152 @@
     <%- include('../partials/header') %>
 
     <main>
-        <h2>Liste des items</h2>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Date de création</th>
-                    <th>Nom</th>
-                    <th>Prix</th>
-                </tr>
-            </thead>
+        <h2>Gestion des items</h2>
 
-            <tbody>
-                <% items.forEach(function(item) { %>
-                    <tr>
-                        <td><%= item.id %></td>
-                        <td>
-                            <%= item.dateCreation.toLocaleString('fr-CA') %>
-                        </td>
-                        <td><%= item.nom %></td>
-                        <td><%= Number(item.prix).toFixed(2) %> $</td>
-                    </tr>
-                <% }); %>
-            </tbody>
-        </table>
-
-        <% if (items.length === 0) { %>
-            <p>Aucun item dans la liste.</p>
+        <!-- Affichage des messages d'erreur -->
+        <% if (erreur) { %>
+            <div class="message-erreur">
+                <%= erreur %>
+            </div>
         <% } %>
+
+        <!-- Formulaire d'ajout -->
+        <section class="formulaire-section">
+
+            <h3>Ajouter un item</h3>
+
+            <form action="/ajouter" method="POST">
+
+                <div class="form-group">
+                    <label for="nom">Nom de l'item :</label>
+                    <input
+                        type="text"
+                        id="nom"
+                        name="nom"
+                        placeholder="Ex. : Clavier"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="prix">Prix ($) :</label>
+                    <input
+                        type="number"
+                        id="prix"
+                        name="prix"
+                        placeholder="Ex. : 49.99"
+                        min="0"
+                        step="0.01"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="btn-ajouter">
+                    Ajouter l'item
+                </button>
+
+            </form>
+
+        </section>
+
+        
+        <!-- Formulaire de suppression par ID -->
+        <section class="formulaire-section">
+
+            <h3>Supprimer un item par ID</h3>
+
+            <form action="/supprimer/id" method="POST">
+
+                <div class="form-group">
+                    <label for="id">Identifiant de l'item :</label>
+
+                    <input
+                        type="number"
+                        id="id"
+                        name="id"
+                        placeholder="Ex. : 3"
+                        min="1"
+                        step="1"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="btn-supprimer">
+                    Supprimer l'item
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <!-- Formulaire de suppression par nom -->
+        <section class="formulaire-section">
+
+            <h3>Supprimer un item par nom</h3>
+
+            <form action="/supprimer/nom" method="POST">
+
+                <div class="form-group">
+
+                    <label for="nomSuppression">
+                        Nom de l'item :
+                    </label>
+
+                    <input
+                        type="text"
+                        id="nomSuppression"
+                        name="nom"
+                        placeholder="Ex. : Clavier"
+                        required
+                    >
+
+                </div>
+
+                <button type="submit" class="btn-supprimer">
+                    Supprimer par nom
+                </button>
+
+            </form>
+
+        </section>
+
+        <!-- Tableau des items -->
+        <section class="tableau-section">
+
+            <h3>Liste des items</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Date de création</th>
+                        <th>Nom</th>
+                        <th>Prix</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <% items.forEach(function(item) { %>
+                        <tr>
+                            <td><%= item.id %></td>
+                            <td>
+                                <%= item.dateCreation.toLocaleString('fr-CA') %>
+                            </td>
+                            <td><%= item.nom %></td>
+                            <td><%= Number(item.prix).toFixed(2) %> $</td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+
+            <% if (items.length === 0) { %>
+                <p>Aucun item dans la liste.</p>
+            <% } %>
+
+        </section>
+
     </main>
 
     <%- include('../partials/footer') %>
