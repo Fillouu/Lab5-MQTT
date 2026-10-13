@@ -34,6 +34,15 @@ app.use(express.urlencoded({ extended: false }));
 // Routes Express
 app.use(require('./routes/index'));
 
+// Route pour ajouter un item
+app.use('/ajouter', require('./routes/ajouter'));
+
+// Route pour supprimer un item
+app.use('/supprimer', require('./routes/supprimer'));
+
+// Route pour modifier un item
+app.use('/modifier', require('./routes/modifier'));
+
 // Initialisation du service MQTT
 const mqttService = require('./services/mqttService');
 
