@@ -1,0 +1,55 @@
+
+<!--
+    @file      index.ejs
+    @author    Felix Gladu
+    @date      13 octobre 2026
+    @brief     Affiche les items dans un tableau HTML.
+-->
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <%- include('../partials/head') %>
+</head>
+
+<body>
+
+    <%- include('../partials/header') %>
+
+    <main>
+        <h2>Liste des items</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Date de création</th>
+                    <th>Nom</th>
+                    <th>Prix</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <% items.forEach(function(item) { %>
+                    <tr>
+                        <td><%= item.id %></td>
+                        <td>
+                            <%= item.dateCreation.toLocaleString('fr-CA') %>
+                        </td>
+                        <td><%= item.nom %></td>
+                        <td><%= Number(item.prix).toFixed(2) %> $</td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+
+        <% if (items.length === 0) { %>
+            <p>Aucun item dans la liste.</p>
+        <% } %>
+    </main>
+
+    <%- include('../partials/footer') %>
+
+</body>
+</html>
