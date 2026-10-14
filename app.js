@@ -60,6 +60,35 @@ io.on('connection', function(socket) {
     });
 });
 
+app.get('/test-erreur', function(req, res, next) {
+    next(new Error('Erreur de test'));
+});
+
+// ==========================================
+// GESTION DES ERREURS
+// ==========================================
+
+// Page 404 : route inexistante
+app.use(function(req, res) {
+    res.status(404).render('pages/404');
+});
+
+// Page d'erreur : problème dans l'application
+app.use(function(err, req, res, next) {
+
+    console.error(err);
+
+    const status = err.status || err.statusCode || 500;
+
+    res.status(status).render('pages/error', {
+        status: status,
+        message: status === 500
+            ? 'Une erreur interne est survenue.'
+            : err.message
+    });
+});
+
+
 // Démarrage du serveur
 server.listen(PORT, function() {
     console.log('Serveur démarré sur http://localhost:' + PORT);

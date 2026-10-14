@@ -1,0 +1,46 @@
+<!--
+ * @file      error.ejs
+ * @author    Felix Gladu
+ * @version   1.0
+ * @date      14 octobre 2026
+ * @brief     Affiche les erreurs internes de l'application.
+ *            Présente le code HTTP et un message d'erreur.
+ */
+-->
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Erreur - Application MQTT</title>
+
+    <link rel="stylesheet"
+          href="/stylesheets/style.css">
+</head>
+
+<body>
+
+    <main class="page-erreur">
+
+        <div class="erreur-contenu">
+
+            <h1><%= status %></h1>
+
+            <h2>Une erreur est survenue</h2>
+
+            <p><%= message %></p>
+
+            <a href="/" class="btn-retour">
+                Retour à l'accueil
+            </a>
+
+        </div>
+
+    </main>
+
+</body>
+</html>
