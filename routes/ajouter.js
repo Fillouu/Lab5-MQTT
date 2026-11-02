@@ -17,7 +17,7 @@ const mqttService = require('../services/mqttService');
 /**
  * @brief Ajoute un nouvel item dans la liste.
  */
-router.post('/', function(req, res) {
+router.post('/', function (req, res) {
 
     const nom = String(req.body.nom || '').trim();
     const prix = Number(req.body.prix);
@@ -39,9 +39,14 @@ router.post('/', function(req, res) {
 
     // Ajouter l'item dans la liste
     const nouvelItem = itemList.ajouterItem(nom, prix);
-
+//correction pour avoir les 4 propriétés de l'item demandé.
     // Publier le nouvel item sur MQTT
-    const messageMQTT = nouvelItem.nom + ';' + nouvelItem.prix;
+    const messageMQTT = [
+        nouvelItem.id,
+        nouvelItem.dateCreation.toISOString(),
+        nouvelItem.nom,
+        nouvelItem.prix
+    ].join(';');
 
     mqttService.publier('ITEM/WEB/NEW', messageMQTT);
 
