@@ -17,7 +17,7 @@ const mqttService = require('../services/mqttService');
 /**
  * @brief Supprime un item à partir de son ID.
  */
-router.post('/id', function(req, res) {
+router.post('/id', function (req, res) {
 
     const id = Number(req.body.id);
 
@@ -43,6 +43,7 @@ router.post('/id', function(req, res) {
             items: itemList.obtenirItems(),
             erreur: "Aucun item trouvé avec l'ID " + id + "."
         });
+        console.log('Suppression impossible : ID ' + id + ' introuvable');
     }
 
     // Publier la suppression sur MQTT
@@ -55,7 +56,7 @@ router.post('/id', function(req, res) {
 /**
  * @brief Supprime un item à partir de son nom.
  */
-router.post('/nom', function(req, res) {
+router.post('/nom', function (req, res) {
 
     const nom = String(req.body.nom || '').trim();
 
@@ -77,6 +78,7 @@ router.post('/nom', function(req, res) {
             items: itemList.obtenirItems(),
             erreur: "Aucun item trouvé avec le nom '" + nom + "'."
         });
+        console.log('Suppression impossible : nom "' + nom + '" introuvable');
     }
 
     // Publier la suppression sur MQTT
