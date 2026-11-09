@@ -41,7 +41,8 @@ router.post('/', function(req, res) {
     const nouvelItem = itemList.ajouterItem(nom, prix);
 
     // Publier le nouvel item sur MQTT
-    const messageMQTT = nouvelItem.nom + ';' + nouvelItem.prix;
+    const messageMQTT = nouvelItem.id + ';' + nouvelItem.dateCreation.toISOString() + ';' + nouvelItem.nom + ';' + nouvelItem.prix;
+
 
     mqttService.publier('ITEM/WEB/NEW', messageMQTT);
 
